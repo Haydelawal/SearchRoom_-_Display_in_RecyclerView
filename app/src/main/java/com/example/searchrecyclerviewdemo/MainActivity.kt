@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.searchrecyclerviewdemo.adapter.MyAdapter
 import com.example.searchrecyclerviewdemo.data.Person
@@ -28,14 +29,26 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 //        val person = Person("Ana", "Brown", 38)
 //        mainViewModel.insertData(person)
 
+        val person = Person("Michael", "Jordan", 23)
+        val  person2 = Person("Lionel", "Messi", 10)
+        val person3 =  Person("Lil", "Wayne", 6)
+
+        mainViewModel.insertData(person)
+        mainViewModel.insertData(person2)
+        mainViewModel.insertData(person3)
+
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = myAdapter
 
-        mainViewModel.readData.observe(this, {
+        mainViewModel.readData.observe(this, Observer{
             myAdapter.setData(it)
         })
 
     }
+
+
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -62,7 +75,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun searchDatabase(query: String) {
         val searchQuery = "%$query%"
 
-        mainViewModel.searchDatabase(searchQuery).observe(this, { list ->
+        mainViewModel.searchDatabase(searchQuery).observe(this, Observer{ list ->
             list.let {
                 myAdapter.setData(it)
             }
